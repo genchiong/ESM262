@@ -1,0 +1,120 @@
+---
+title: "Looping Exercise"
+author: "Genevieve Chiong"
+date: "2/18/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(purrr)
+library(ggpubr)
+library(here)
+
+source(here("R/auto_power_gen.R"))
+```
+
+recreate possible_cars, add an additional super light car with mass 5,000 kg, surface area 10m2
+
+provide 3 new estimates of power required that includes this super light car in the mix (one for each approach to repeating calculations)
+
+turn these 3 estimates in as Assignment 3 on Gauchospace; You should also try to recreate the graphs with a 4th car, you don’t need to turn in the graphs; we will go over in class
+
+
+# Our highway
+
+4 Car Types 
+
+* Car A: mass = 20000 kg, area = 22 m^2^
+* Car B: mass = 65000 kg, area = 30 m^2^ 
+* Car C: mass = 38000 kg, area = 22 m^2^
+* Car D: mass = 5000 kg, area = 10 m^2^
+
+Mean highway speed = 100 km/hr 
+
+```{r}
+# generate a structure to store info on our possible cars
+possible_cars <- data.frame(name = c("A", "B", "C", "D"), 
+                            mass = c(20000, 65000, 38000, 5000), 
+                            area = c(22, 30, 22, 10))
+```
+
+```{r}
+# use sample to generate a distribution of speeds
+# assume a log normal distribution of speeds with mean 100 km/hr and standard deviation that is 10% of the mean
+
+nsample = 200
+mean_speed = log(100*0.277)
+
+speeds = rlnorm(mean = mean_speed,
+                sd = 0.1 * mean_speed,
+                nsample)
+
+plot(density(speeds),
+     ylab = "Distribution of Speeds in (m/s)")
+```
+
+# By hand 
+```{r}
+# run each car for all speeds 
+
+# car a 
+powerA = auto_power_gen(V = speeds, A = possible_cars$area[1], m = possible_cars$mass[1])
+summary(powerA)
+
+# car b 
+powerB = auto_power_gen(V = speeds, A = possible_cars$area[2], m = possible_cars$mass[2])
+summary(powerB)
+
+# car c 
+powerC = auto_power_gen(V = speeds, A = possible_cars$area[3], m = possible_cars$mass[3])
+summary(powerC)
+
+# car d
+powerD = auto_power_gen(V = speeds, A = possible_cars$area[4], m = possible_cars$mass[4])
+summary(powerD)
+
+# combine into one dataframe and pivot_longer
+powerall1 <- cbind.data.frame(powerA, powerB, powerC, powerD)
+colnames(powerall1) = possible_cars$name
+
+powerall1 <- powerall1 %>% 
+  pivot_longer(cols = everything(), 
+               names_to = "car", 
+               values_to = "power")
+
+method1_plot <- ggplot(data = powerall1,
+                        aes(x = car,
+                            y = power, 
+                            fill = car)) +
+  geom_boxplot() + 
+  ggtitle("By Hand")
+
+method1_plot
+```
+
+# Pmap
+
+```{r}
+
+```
+
+
+
+# For Loop
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+

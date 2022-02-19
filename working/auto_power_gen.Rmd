@@ -1,0 +1,59 @@
+---
+title: "Untitled"
+author: "Genevieve Chiong"
+date: "2/14/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+```{r}
+# mass = 31752 kg 
+# 30 m/s
+# 80 km/hr = 22.2222 m/s 
+# 120 km/hr = 33.3333
+# 40 km/hr = 11.1111
+# 5 km/hr = 1.38889
+auto_power <- auto_power_gen(m=31752, V=c(30, 22.2222, 33.3333, 11.1111, 1.38889), A=16)
+```
+
+```{r}
+# lighter vehicle 
+# mass = 10000 kg 
+auto_power_lighter <- auto_power_gen(m=20000, V=c(30, 22.2222, 33.3333, 11.1111, 1.38889), A=16)
+```
+
+```{r}
+speed <- c(30, 22.2222, 33.3333, 11.1111, 1.38889)
+
+auto_power_dataframe <- data.frame(auto_power, auto_power_lighter, speed)
+```
+
+
+```{r}
+ggplot() +
+  geom_line(data = auto_power_dataframe,
+            aes(x = speed, 
+                y = auto_power),
+            color = "red") + 
+    geom_line(data = auto_power_dataframe,
+            aes(x = speed, 
+                y = auto_power_lighter),
+            color = "green")
+```
+
+
+
+
+
+
+
+
+
+
+
+
