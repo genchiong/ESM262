@@ -188,21 +188,21 @@ summary(powerall3)
 * Car A: Mean = 225000   
 * Car B: Mean = 468503   
 * Car C: Mean = 302141   
-* Car D: Mean = 84741
+* **Car D: Mean = 84741**
 
 ### Pmap
 
 * Car A: Mean = 219795   
 * Car B: Mean = 461887   
 * Car C: Mean = 297166   
-* Car D: Mean = 82322 
+* **Car D: Mean = 82322** 
 
 ### For Loop
 
 * Car A: Mean = 228416  
 * Car B: Mean = 475804   
 * Car C: Mean = 306818  
-* Car D: Mean = 86007 
+* **Car D: Mean = 86007** 
 
 
 ```{r, echo = FALSE}
