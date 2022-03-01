@@ -15,11 +15,6 @@ source(here("R/fish_diversity.R"))
 ```
 
 
-Write a function that takes a vector of fish names and always returns three items
-the most common fish,
-the rarest fish
-the total number of fish
-
 ```{r}
 # read in the fish data 
 fish <- read.delim(here("data", "fish.txt"))
@@ -28,8 +23,6 @@ fish <- read.delim(here("data", "fish.txt"))
 fish_diversity(fish)
 ```
 
-
-
-
+Results: The most common fish is salmon, the rarest fish is tuna, and the total number of fish is 300. 
 
 
