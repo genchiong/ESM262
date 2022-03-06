@@ -1,0 +1,52 @@
+---
+title: "Extreme Temperature Risk for Wheat Crops"
+author: "Genevieve Chiong"
+date: "3/2/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(here)
+
+source(here("R/crop_temperature.R"))
+```
+
+
+```{r}
+tmax <- read_delim(here("data", "tmax.txt"), delim = " ")
+```
+
+
+```{r}
+# nsample_age = 7920
+# mean_age = 4
+# 
+# age = rlnorm(mean = mean_age,
+#              sd = 1,
+#              nsample_age)
+
+age = runif(min = 1, max = 12, n = 7920) 
+```
+
+```{r}
+crop_temperature(daily_temp = tmax$tmax, age = age)
+```
+
+
+Generally, caution should be taken if the heat index is over 77 degrees (Fahrenheit). Above 82 degrees is considered 'extreme caution' — heat-related illness is possible with long exposure. Over 85 is dangerous — heat illness is likely and heat stroke is possible.
+
+77 - low
+80 - medium 
+82 - extreme
+85 + -- dangerous 
+
+
+or impact on agriculture??? 
+
+temperature, crop species, crop age, nutrient levels, irrigation 
+
+
+
