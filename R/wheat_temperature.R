@@ -1,27 +1,26 @@
-#' crop_temperature
+#' wheat_temperature
 #' 
 #' Compute level of risk associated with extreme temperature events for wheat crop 
 #' @param daily_temp (C) 
 #' @param age (months) 
-#' @param temp_threshold_med (C) (default = 26)
-#' @param temp_threshold_high (C) (default = 28)
+#' @param risk_threshold_med (default = 75)
+#' @param risk_threshold_high (default = 82)
 #' @param age_threshold (years) (default = 8)
 #' @return risk (high, med, low), n_extremes
 
-crop_temperature = function(daily_temp, age, temp_threshold_med = 26, 
-                            temp_threshold_high = 28, age_threshold = 8) {
+wheat_temperature = function(daily_temp, age, risk_threshold_med = 75, 
+                            risk_threshold_high = 82, age_threshold = 8) {
   
   daily_temp = as.data.frame(daily_temp)
   
-  # error checking 
-  
+  risk = 1.8 * daily_temp + 0.5 * (age^2)  
   
   # only high or med if wheat age is greater than 8 months 
-  if (any(age >= 8)) {
-    risk = case_when(daily_temp < temp_threshold_med ~ "low",
-                     daily_temp >= temp_threshold_med &
-                       daily_temp < temp_threshold_high ~ "medium", 
-                     daily_temp >= temp_threshold_high ~ "high")
+  if (any(age >= age_threshold)) {
+    risk = case_when(risk < risk_threshold_med ~ "low",
+                     risk >= risk_threshold_med &
+                       risk < risk_threshold_high ~ "medium", 
+                     risk >= risk_threshold_high ~ "high")  
   } else
     risk = "low" 
   
@@ -33,4 +32,5 @@ crop_temperature = function(daily_temp, age, temp_threshold_med = 26,
   
   return(list(risk = risk, n_extremes = n_extremes))
 }
+  
 

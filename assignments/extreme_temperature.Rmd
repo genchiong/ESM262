@@ -10,43 +10,46 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(here)
+library(kableExtra)
 
-source(here("R/crop_temperature.R"))
+source(here("R/wheat_temperature.R"))
 ```
 
 
-```{r}
+```{r, message = FALSE}
+# read in the temperature data
 tmax <- read_delim(here("data", "tmax.txt"), delim = " ")
-```
 
-
-```{r}
-# nsample_age = 7920
-# mean_age = 4
-# 
-# age = rlnorm(mean = mean_age,
-#              sd = 1,
-#              nsample_age)
-
+# create random data for age 
 age = runif(min = 1, max = 12, n = 7920) 
 ```
 
+
+
 ```{r}
-crop_temperature(daily_temp = tmax$tmax, age = age)
+# use wheat_temperature function
+risk <- wheat_temperature(daily_temp = tmax$tmax, age = age) 
+
+# view results
+risk
 ```
+**The number of extreme events (when daily temperature >= 28 C) is 1,257.**
 
+```{r}
+# view results in a table
+risk_table <- risk %>% 
+  as.data.frame() %>% 
+  cbind(wheat_age = age) %>%
+  cbind(tmax = tmax$tmax) %>%
+  select(-n_extremes)
 
-Generally, caution should be taken if the heat index is over 77 degrees (Fahrenheit). Above 82 degrees is considered 'extreme caution' — heat-related illness is possible with long exposure. Over 85 is dangerous — heat illness is likely and heat stroke is possible.
-
-77 - low
-80 - medium 
-82 - extreme
-85 + -- dangerous 
-
-
-or impact on agriculture??? 
-
-temperature, crop species, crop age, nutrient levels, irrigation 
+kable(risk_table,
+      col.names = c("Risk",
+                    "Wheat Age",
+                    "Tmax")) %>% 
+  kable_styling(bootstrap_options = "striped",
+                full_width = FALSE)
+```
 
 
 
